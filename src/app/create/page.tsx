@@ -1,6 +1,42 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useCallback } from 'react';
+import Image from 'next/image';
+import { useDropzone } from 'react-dropzone';
+
+export default function Create() {
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.webp']
+    },
+    maxFiles: 1,
+    multiple: false
+  });
+
+  const handleGenerate = async () => {
+    if (!image) return;
+    setLoading(true);
+    try {
+      // TODO: Implement API call for meme generation
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
+    } catch (error) {
+      console.error('Error generating meme:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -16,51 +52,72 @@ export default function Home() {
         <main className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
           <div className="space-y-8">
             {/* Image Upload Section */}
-            <section className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed ${isDragActive ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'} rounded-lg p-8 text-center transition-colors duration-200 cursor-pointer`}
+            >
+              <input {...getInputProps()} />
               <div className="space-y-4">
-                <div className="flex items-center justify-center">
-                  <svg
-                    className="w-12 h-12 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                {preview ? (
+                  <div className="relative w-full aspect-video">
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      fill
+                      className="object-contain rounded-lg"
                     />
-                  </svg>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Drag and drop your image here, or click to select
-                </p>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                  Choose Image
-                </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {isDragActive ? 'Drop your image here' : 'Drag and drop your image here, or click to select'}
+                    </p>
+                  </>
+                )}
               </div>
-            </section>
+            </div>
 
             {/* Preview Section */}
-            <section className="space-y-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Preview
-              </h2>
-              <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500 dark:text-gray-400">
-                  Your meme will appear here
-                </p>
-              </div>
-            </section>
+            {preview && (
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Preview
+                </h2>
+                <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center relative">
+                  <Image
+                    src={preview}
+                    alt="Preview"
+                    fill
+                    className="object-contain rounded-lg"
+                  />
+                </div>
+              </section>
+            )}
 
             {/* Generate Button */}
             <button
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${image ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'}`}
               type="button"
+              onClick={handleGenerate}
+              disabled={!image || loading}
             >
-              Generate Meme
+              {loading ? 'Generating...' : 'Generate Meme'}
             </button>
           </div>
         </main>
