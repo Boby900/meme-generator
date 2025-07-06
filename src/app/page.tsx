@@ -139,7 +139,7 @@ export default function Home() {
             <div className="aspect-square bg-gradient-to-br from-purple-400 to-pink-600 p-8 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-6xl mb-4">🐱</div>
-                <p className="text-white font-bold text-lg">"When you realize it's Monday"</p>
+                <p className="text-white font-bold text-lg">When you realize its Monday</p>
               </div>
             </div>
             <CardContent className="p-4">
@@ -151,7 +151,7 @@ export default function Home() {
             <div className="aspect-square bg-gradient-to-br from-blue-400 to-purple-600 p-8 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-6xl mb-4">🍕</div>
-                <p className="text-white font-bold text-lg">"Me at 3 AM"</p>
+                <p className="text-white font-bold text-lg">Me at 3 AM</p>
               </div>
             </div>
             <CardContent className="p-4">
@@ -163,7 +163,7 @@ export default function Home() {
             <div className="aspect-square bg-gradient-to-br from-green-400 to-blue-600 p-8 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-6xl mb-4">💻</div>
-                <p className="text-white font-bold text-lg">"Code works on my machine"</p>
+                <p className="text-white font-bold text-lg">Code works on my machine</p>
               </div>
             </div>
             <CardContent className="p-4">
@@ -215,7 +215,7 @@ export default function Home() {
                   <p className="text-gray-400 text-sm">Content Creator</p>
                 </div>
               </div>
-              <p className="text-gray-300">"This tool has revolutionized my social media game. The AI is incredibly smart at understanding context!"</p>
+              <p className="text-gray-300">This tool has revolutionized my social media game. The AI is incredibly smart at understanding context!</p>
             </CardContent>
           </Card>
 
@@ -230,7 +230,7 @@ export default function Home() {
                   <p className="text-gray-400 text-sm">Marketing Manager</p>
                 </div>
               </div>
-              <p className="text-gray-300">"My team uses this daily for our campaigns. The memes are always on point and save us hours of brainstorming."</p>
+              <p className="text-gray-300">My team uses this daily for our campaigns. The memes are always on point and save us hours of brainstorming.</p>
             </CardContent>
           </Card>
 
@@ -245,7 +245,7 @@ export default function Home() {
                   <p className="text-gray-400 text-sm">Influencer</p>
                 </div>
               </div>
-              <p className="text-gray-300">"I was skeptical at first, but the quality is amazing. My followers love the memes I create with this!"</p>
+              <p className="text-gray-300">I was skeptical at first, but the quality is amazing. My followers love the memes I create with this!</p>
             </CardContent>
           </Card>
         </div>
