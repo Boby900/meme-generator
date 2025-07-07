@@ -290,7 +290,7 @@ export default function Home() {
             </div>
             <div className="mt-8 pt-8 border-t border-gray-800">
               <p className="text-gray-500 text-sm">
-                © 2024 AI Meme Generator. All rights reserved.
+                © 2025 AI Meme Generator. All rights reserved.
               </p>
             </div>
           </div>
