@@ -1,13 +1,11 @@
 'use server';
 
 export async function generateMeme(base64Image: string) {
-    const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY; // This will be accessed on the server
-    const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site URL
-    const YOUR_SITE_NAME = "MemeAI"; // Replace with your actual site name
-
+    const OPENROUTER_API_KEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site URL
+    const YOUR_SITE_NAME = "MemeAI"; // Replace with your actual site namess
     if (!OPENROUTER_API_KEY) {
-        console.error("OPENROUTER_API_KEY is not set in server action.");
-        throw new Error("API Key is not configured. Please check your environment variables.");
+        throw new Error("OPENROUTER_API_KEY is not set in server action.");
     }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
