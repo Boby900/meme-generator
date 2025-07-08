@@ -28,13 +28,58 @@ export default function Create() {
     if (!image) return;
     setLoading(true);
     try {
-      // TODO: Implement API call for meme generation
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
+      const imageUrl = URL.createObjectURL(image);
+      const memeResult = await generateMeme(imageUrl);
+      console.log('Meme generated:', memeResult);
+      // TODO: Handle the memeResult (e.g., display it to the user)
     } catch (error) {
       console.error('Error generating meme:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const generateMeme = async (imageUrl: string) => {
+    const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY; // Ensure this is set in .dev.vars
+    const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site URL
+    const YOUR_SITE_NAME = "MemeAI"; // Replace with your actual site name
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "HTTP-Referer": YOUR_SITE_URL,
+        "X-Title": YOUR_SITE_NAME,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "model": "mistralai/mistral-small-3.2-24b-instruct:free",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "What is in this image?"
+              },
+              {
+                "type": "image_url",
+                "image_url": {
+                  "url": imageUrl
+                }
+              }
+            ]
+          }
+        ]
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`API error: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
+    }
+
+    return response.json();
   };
 
   return (
