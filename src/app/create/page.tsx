@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
+import { generateMeme } from '@/lib/actions';
 
 export default function Create() {
   const [image, setImage] = useState<File | null>(null);
@@ -28,7 +29,10 @@ export default function Create() {
     if (!image) return;
     setLoading(true);
     try {
-      const imageUrl = URL.createObjectURL(image);
+      // const imageUrl = URL.createObjectURL(image);
+            const imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+
+      console.log("imageUrl:", imageUrl);
       const memeResult = await generateMeme(imageUrl);
       console.log('Meme generated:', memeResult);
       // TODO: Handle the memeResult (e.g., display it to the user)
@@ -37,49 +41,6 @@ export default function Create() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const generateMeme = async (imageUrl: string) => {
-    const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY; // Ensure this is set in .dev.vars
-    const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site URL
-    const YOUR_SITE_NAME = "MemeAI"; // Replace with your actual site name
-
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-        "HTTP-Referer": YOUR_SITE_URL,
-        "X-Title": YOUR_SITE_NAME,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "model": "mistralai/mistral-small-3.2-24b-instruct:free",
-        "messages": [
-          {
-            "role": "user",
-            "content": [
-              {
-                "type": "text",
-                "text": "What is in this image?"
-              },
-              {
-                "type": "image_url",
-                "image_url": {
-                  "url": imageUrl
-                }
-              }
-            ]
-          }
-        ]
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`API error: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
-    }
-
-    return response.json();
   };
 
   return (
@@ -138,23 +99,7 @@ export default function Create() {
               </div>
             </div>
 
-            {/* Preview Section */}
-            {preview && (
-              <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Preview
-                </h2>
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center relative">
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    fill
-                    className="object-contain rounded-lg"
-                  />
-                </div>
-              </section>
-            )}
-
+           
             {/* Generate Button */}
             <button
               className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${image ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'}`}
