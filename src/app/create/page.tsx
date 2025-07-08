@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
+import { generateMeme } from '@/lib/actions';
 
 export default function Create() {
   const [image, setImage] = useState<File | null>(null);
@@ -28,13 +29,24 @@ export default function Create() {
     if (!image) return;
     setLoading(true);
     try {
-      // TODO: Implement API call for meme generation
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
+      // Convert image to Base64
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onloadend = async () => {
+        const base64Image = reader.result as string;
+        const memeResult = await generateMeme(base64Image);
+        console.log('Meme generated:', memeResult);
+        // TODO: Handle the memeResult (e.g., display it to the user)
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+        setLoading(false);
+      };
     } catch (error) {
       console.error('Error generating meme:', error);
-    } finally {
       setLoading(false);
     }
+    // setLoading(false) is now handled inside reader.onloadend or reader.onerror
   };
 
   return (
@@ -93,23 +105,7 @@ export default function Create() {
               </div>
             </div>
 
-            {/* Preview Section */}
-            {preview && (
-              <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Preview
-                </h2>
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center relative">
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    fill
-                    className="object-contain rounded-lg"
-                  />
-                </div>
-              </section>
-            )}
-
+           
             {/* Generate Button */}
             <button
               className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${image ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'}`}

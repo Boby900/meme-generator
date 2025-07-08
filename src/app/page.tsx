@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import Navbar from "./navbar";
+import Link from "next/link";
 export default function Home() {
   return (
        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
@@ -18,12 +19,12 @@ export default function Home() {
           <p className="max-w-2xl mx-auto text-xl sm:text-2xl text-gray-300 mb-12">
             Upload any image and let our AI analyze it to create hilarious, context-aware memes instantly.
           </p>
-          <Button
+          <Link href="/create"
             className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-2xl"
           >
             Create Your Meme
             <ArrowDown className="ml-2 h-5 w-5" />
-          </Button>
+        </Link>
         </div>
       </div>
 
