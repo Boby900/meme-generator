@@ -20,12 +20,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              href="/create" 
-              className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-            >
-              Create Meme
-            </Link>
+          
             <Link 
               href="/gallery" 
               className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
