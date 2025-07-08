@@ -1,9 +1,10 @@
 'use server';
 
-export async function generateMeme(imageUrl: string) {
+export async function generateMeme(base64Image: string) {
     const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY; // This will be accessed on the server
     const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site URL
     const YOUR_SITE_NAME = "MemeAI"; // Replace with your actual site name
+
     if (!OPENROUTER_API_KEY) {
         console.error("OPENROUTER_API_KEY is not set in server action.");
         throw new Error("API Key is not configured. Please check your environment variables.");
@@ -25,12 +26,12 @@ export async function generateMeme(imageUrl: string) {
                     "content": [
                         {
                             "type": "text",
-                            "text": "What is in this image?"
+                            "text": "Analyze this image and generate a funny meme caption for it. Be creative and humorous."
                         },
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": imageUrl
+                                "url": base64Image // Use the Base64 string here
                             }
                         }
                     ]

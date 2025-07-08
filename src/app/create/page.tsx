@@ -29,18 +29,24 @@ export default function Create() {
     if (!image) return;
     setLoading(true);
     try {
-      // const imageUrl = URL.createObjectURL(image);
-            const imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
-
-      console.log("imageUrl:", imageUrl);
-      const memeResult = await generateMeme(imageUrl);
-      console.log('Meme generated:', memeResult);
-      // TODO: Handle the memeResult (e.g., display it to the user)
+      // Convert image to Base64
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onloadend = async () => {
+        const base64Image = reader.result as string;
+        const memeResult = await generateMeme(base64Image);
+        console.log('Meme generated:', memeResult);
+        // TODO: Handle the memeResult (e.g., display it to the user)
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+        setLoading(false);
+      };
     } catch (error) {
       console.error('Error generating meme:', error);
-    } finally {
       setLoading(false);
     }
+    // setLoading(false) is now handled inside reader.onloadend or reader.onerror
   };
 
   return (
