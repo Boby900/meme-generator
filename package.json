@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev:auth": "pnpm dlx cross-env PORT=3001 tsx src/auth/index.ts",
+    "dev:auth": "cd src && pnpm dlx cross-env PORT=3001 tsx auth/index.ts",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",

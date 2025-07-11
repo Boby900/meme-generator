@@ -3,7 +3,7 @@ import { auth, login, logout } from "../actions"
 
 export default async function Home() {
   const subject = await auth()
-
+  console.log("subject", subject)
   return (
     <div>
       <main>

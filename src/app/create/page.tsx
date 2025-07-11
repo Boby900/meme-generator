@@ -9,6 +9,8 @@ export default function Create() {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [memeUrl, setMemeUrl] = useState<string>(''); // NEW: state for generated meme
+  const [caption, setCaption] = useState<string>(''); // NEW: state for meme caption
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -28,15 +30,25 @@ export default function Create() {
   const handleGenerate = async () => {
     if (!image) return;
     setLoading(true);
+    setMemeUrl(''); // Clear previous meme
+    setCaption(''); // Clear previous caption
     try {
       // Convert image to Base64
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onloadend = async () => {
         const base64Image = reader.result as string;
-        const memeResult = await generateMeme(base64Image);
-        console.log('Meme generated:', memeResult);
-        // TODO: Handle the memeResult (e.g., display it to the user)
+        try {
+          const memeResult = await generateMeme(base64Image);
+          // Extract caption from memeResult
+          const memeContent = memeResult?.choices?.[0]?.message?.content || '';
+          setCaption(memeContent);
+          setMemeUrl(''); // No image, just caption
+        } catch (error) {
+          console.error('Error generating meme:', error);
+        } finally {
+          setLoading(false);
+        }
       };
       reader.onerror = (error) => {
         console.error('Error reading file:', error);
@@ -117,6 +129,25 @@ export default function Create() {
             </button>
           </div>
         </main>
+        {/* Render generated meme and download button */}
+        {memeUrl && (
+          <div className="mt-8 text-center">
+            <Image src={memeUrl} alt="Generated Meme" width={512} height={512} className="mx-auto rounded-lg" />
+            <a
+              href={memeUrl}
+              download="meme.png"
+              className="inline-block mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600"
+            >
+              Download Meme
+            </a>
+          </div>
+        )}
+        {/* Render meme caption if present */}
+        {caption && (
+          <div className="mt-6 p-4 bg-gray-200 dark:bg-gray-700 rounded-lg text-center text-lg text-gray-800 dark:text-gray-100 whitespace-pre-line">
+            {caption}
+          </div>
+        )}
       </div>
     </div>
   );
