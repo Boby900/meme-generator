@@ -10,6 +10,7 @@ export default function Create() {
   const [preview, setPreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [memeUrl, setMemeUrl] = useState<string>(''); // NEW: state for generated meme
+  const [caption, setCaption] = useState<string>(''); // NEW: state for meme caption
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -30,6 +31,7 @@ export default function Create() {
     if (!image) return;
     setLoading(true);
     setMemeUrl(''); // Clear previous meme
+    setCaption(''); // Clear previous caption
     try {
       // Convert image to Base64
       const reader = new FileReader();
@@ -38,9 +40,10 @@ export default function Create() {
         const base64Image = reader.result as string;
         try {
           const memeResult = await generateMeme(base64Image);
-          // Try to get the meme image URL or base64 from the result
-          const url = memeResult?.url || memeResult?.base64 || '';
-          setMemeUrl(url);
+          // Extract caption from memeResult
+          const memeContent = memeResult?.choices?.[0]?.message?.content || '';
+          setCaption(memeContent);
+          setMemeUrl(''); // No image, just caption
         } catch (error) {
           console.error('Error generating meme:', error);
         } finally {
@@ -137,6 +140,12 @@ export default function Create() {
             >
               Download Meme
             </a>
+          </div>
+        )}
+        {/* Render meme caption if present */}
+        {caption && (
+          <div className="mt-6 p-4 bg-gray-200 dark:bg-gray-700 rounded-lg text-center text-lg text-gray-800 dark:text-gray-100 whitespace-pre-line">
+            {caption}
           </div>
         )}
       </div>
