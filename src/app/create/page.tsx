@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { generateMeme } from '@/lib/actions';
@@ -9,8 +9,9 @@ export default function Create() {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [memeUrl, setMemeUrl] = useState<string>(''); // NEW: state for generated meme
-  const [caption, setCaption] = useState<string>(''); // NEW: state for meme caption
+  const [memeUrl, setMemeUrl] = useState<string>(''); // state for generated meme image
+  const [caption, setCaption] = useState<string>(''); // state for meme caption
+  const canvasRef = useRef<HTMLCanvasElement | null>(null); // ref for canvas
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -26,6 +27,45 @@ export default function Create() {
     maxFiles: 1,
     multiple: false
   });
+
+  // Draw meme when caption is set
+  useEffect(() => {
+    if (!caption || !preview) return;
+    const img = new window.Image();
+    img.crossOrigin = 'anonymous';
+    img.src = preview;
+    img.onload = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      // Set canvas size to image size
+      canvas.width = img.width;
+      canvas.height = img.height;
+      // Draw image
+      ctx.drawImage(img, 0, 0);
+      // Draw caption (simple: bottom center, white text, black outline)
+      const fontSize = Math.floor(canvas.height / 15);
+      ctx.font = `bold ${fontSize}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      const lines = caption.split('\n');
+      const lineHeight = fontSize * 1.2;
+      const yStart = canvas.height - (lines.length - 1) * lineHeight - 20;
+      lines.forEach((line, i) => {
+        const y = yStart + i * lineHeight;
+        // Outline
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 6;
+        ctx.strokeText(line, canvas.width / 2, y);
+        // Fill
+        ctx.fillStyle = 'white';
+        ctx.fillText(line, canvas.width / 2, y);
+      });
+      // Export to data URL
+      setMemeUrl(canvas.toDataURL('image/png'));
+    };
+  }, [caption, preview]);
 
   const handleGenerate = async () => {
     if (!image) return;
@@ -43,7 +83,7 @@ export default function Create() {
           // Extract caption from memeResult
           const memeContent = memeResult?.choices?.[0]?.message?.content || '';
           setCaption(memeContent);
-          setMemeUrl(''); // No image, just caption
+          // setMemeUrl will be set by useEffect after drawing on canvas
         } catch (error) {
           console.error('Error generating meme:', error);
         } finally {
@@ -129,6 +169,8 @@ export default function Create() {
             </button>
           </div>
         </main>
+        {/* Hidden canvas for meme generation */}
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
         {/* Render generated meme and download button */}
         {memeUrl && (
           <div className="mt-8 text-center">
@@ -142,8 +184,8 @@ export default function Create() {
             </a>
           </div>
         )}
-        {/* Render meme caption if present */}
-        {caption && (
+        {/* Render meme caption if present and not showing meme image */}
+        {caption && !memeUrl && (
           <div className="mt-6 p-4 bg-gray-200 dark:bg-gray-700 rounded-lg text-center text-lg text-gray-800 dark:text-gray-100 whitespace-pre-line">
             {caption}
           </div>
