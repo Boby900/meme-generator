@@ -2,31 +2,55 @@
 
 import { createDb } from '@/db';
 import { memes } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
-// This function will be called from your server actions
-export async function saveMeme(originalImage: string, caption: string, generatedImage?: string, userId?: string) {
-  // In a real Cloudflare Worker environment, DB would be available globally
-  // For now, this is a placeholder - you'll need to pass the D1 instance
-  // from your API routes or server actions
-  
-  // Example usage in an API route:
-  // const db = createDb(DB);
-  // const result = await db.insert(memes).values({
-  //   originalImage,
-  //   caption,
-  //   generatedImage,
-  //   userId
-  // });
-  
-  console.log('Would save meme:', { originalImage, caption, generatedImage, userId });
+// Type for the environment with D1 binding
+interface Env {
+  DB: any; // D1Database type
 }
 
-export async function getMemes(userId?: string) {
-  // Example usage:
-  // const db = createDb(DB);
-  // const result = await db.select().from(memes).where(eq(memes.userId, userId));
-  // return result;
+// This function will be called from your server actions
+export async function saveMeme(env: Env, originalImage: string, caption: string, generatedImage?: string, userId?: string) {
+  const db = createDb(env);
   
-  console.log('Would get memes for user:', userId);
-  return [];
+  const result = await db.insert(memes).values({
+    originalImage,
+    caption,
+    generatedImage,
+    userId
+  });
+  
+  return result;
+}
+
+export async function getMemes(env: Env, userId?: string) {
+  const db = createDb(env);
+  
+  if (userId) {
+    const result = await db.select().from(memes).where(eq(memes.userId, userId));
+    return result;
+  } else {
+    const result = await db.select().from(memes);
+    return result;
+  }
+}
+
+export async function getMemeById(env: Env, id: number) {
+  const db = createDb(env);
+  
+  const result = await db.select().from(memes).where(eq(memes.id, id));
+  return result[0] || null;
+}
+
+export async function deleteMeme(env: Env, id: number, userId?: string) {
+  const db = createDb(env);
+  
+  if (userId) {
+    // Only delete if user owns the meme
+    const result = await db.delete(memes).where(eq(memes.id, id) && eq(memes.userId, userId));
+    return result;
+  } else {
+    const result = await db.delete(memes).where(eq(memes.id, id));
+    return result;
+  }
 } 
