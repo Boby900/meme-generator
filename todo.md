@@ -1,0 +1,1 @@
+add auth using nextauth.js first basic(jwt) then d1 adapter and Oauth
