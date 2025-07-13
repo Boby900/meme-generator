@@ -10,14 +10,15 @@ interface Env {
 }
 
 // This function will be called from your server actions
-export async function saveMeme(env: Env, originalImage: string, caption: string, generatedImage?: string, userId?: string) {
+export async function saveMeme(env: Env, prompt: string, originalImage: string, caption: string, generatedImage?: string, userId?: string) {
   const db = createDb(env);
   
   const result = await db.insert(memes).values({
     originalImage,
     caption,
     generatedImage,
-    userId
+    userId,
+    prompt
   });
   
   return result;
