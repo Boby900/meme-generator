@@ -1,0 +1,1 @@
+ALTER TABLE `memes` ADD `prompt` text NOT NULL;

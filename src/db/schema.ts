@@ -4,7 +4,10 @@ export const memes = sqliteTable('memes', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   originalImage: text('original_image').notNull(),
   caption: text('caption').notNull(),
+  prompt: text('prompt').notNull(),
   generatedImage: text('generated_image'),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
   userId: text('user_id'),
+
+
 }); 
