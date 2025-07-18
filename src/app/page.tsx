@@ -2,12 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import Navbar from "./navbar";
 import Link from "next/link";
 export default function Home() {
   return (
        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-       <Navbar />
+
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32">
         <div className="text-center">

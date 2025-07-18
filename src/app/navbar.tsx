@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { User, Menu, X, Zap, History, Settings } from 'lucide-react';
+import { User, Menu, X, Zap, History, Settings, LogIn } from 'lucide-react';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -20,7 +20,6 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-          
             <Link 
               href="/gallery" 
               className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
@@ -49,6 +48,17 @@ export default function Navbar() {
               >
                 <User className="h-5 w-5 text-gray-300" />
                 <span className="text-gray-300 text-sm font-medium">Profile</span>
+              </Link>
+            </div>
+
+            {/* Sign In Button */}
+            <div className="flex items-center">
+              <Link
+                href="/api/auth/signin"
+                className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+              >
+                <LogIn className="h-5 w-5" />
+                <span>Sign In</span>
               </Link>
             </div>
           </div>
@@ -95,6 +105,13 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Settings
+              </Link>
+              <Link
+                href="/sign-in"
+                className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-md transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sign In
               </Link>
               <Link
                 href="/profile"
