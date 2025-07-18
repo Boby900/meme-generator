@@ -54,7 +54,7 @@ export default function Navbar() {
             {/* Sign In Button */}
             <div className="flex items-center">
               <Link
-                href="/sign-in"
+                href="/api/auth/signin"
                 className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
               >
                 <LogIn className="h-5 w-5" />
