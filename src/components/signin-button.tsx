@@ -1,9 +1,5 @@
-import { handleSignIn } from "../lib/auth-actions"
+import Link from "next/link";
 
 export function SignIn() {
-  return (
-    <form action={handleSignIn}>
-      <button type="submit">Sign in</button>
-    </form>
-  )
+  return <Link href="/api/auth/signin">Sign In</Link>;
 }
