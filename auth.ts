@@ -15,10 +15,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         try {
           const { email, password } = await signInSchema.parseAsync(credentials)
           
-          // For demo purposes, accept any email/password
+          // For demo purposes, accept specific demo credentials
           // In a real app, you would validate against a database
-          if (email && password) {
-            return { email: "bobyt2265@gmail.com", password: 'DemoUser' }
+          if (email === "demo@example.com" && password === "demo12345") {
+            return {
+              id: "demo-user",
+              email: "demo@example.com",
+              name: "Demo User"
+            }
           }
           
           return null
