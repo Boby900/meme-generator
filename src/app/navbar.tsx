@@ -2,9 +2,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { User, Menu, X, Zap, History, Settings, LogIn } from 'lucide-react';
+import { useSession } from "next-auth/react";
+import { SignOut } from '@/components/signout-button';
+import { SignIn } from '@/components/signin-button';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { data: session } = useSession();
 
   return (
     <nav className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
@@ -53,13 +57,11 @@ export default function Navbar() {
 
             {/* Sign In Button */}
             <div className="flex items-center">
-              <Link
-                href="/api/auth/signin"
-                className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-              >
-                <LogIn className="h-5 w-5" />
-                <span>Sign In</span>
-              </Link>
+              {session?.user ? (
+                <SignOut />
+              ) : (
+                <SignIn />
+              )}
             </div>
           </div>
 
