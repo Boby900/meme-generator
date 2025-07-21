@@ -15,6 +15,13 @@
       "when": 1752312328818,
       "tag": "0001_perfect_carmella_unuscione",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1753019118653,
+      "tag": "0002_tranquil_jimmy_woo",
+      "breakpoints": true
     }
   ]
 }
