@@ -9,7 +9,7 @@ export default defineConfig({
   driver: 'd1-http',
   dbCredentials: {
     accountId: process.env.CLOUDFLARE_ACCOUNT_ID || '',
-    databaseId: '08e1a572-4ba9-40af-bfe0-1876316af4ef',
+    databaseId: '04a7d2a0-185d-47fb-a346-9d3b893bcb5c',
     token: process.env.CLOUDFLARE_API_TOKEN || '',
   },
-}); 
+});
