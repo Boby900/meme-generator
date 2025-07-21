@@ -14,7 +14,10 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "wrangler d1 migrations apply meme-db",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate:local": "drizzle-kit migrate --config=drizzle.config.local.ts",
+    "db:studio": "drizzle-kit studio",
+    "db:studio:local": "drizzle-kit studio --config=drizzle.config.local.ts",
+    "db:studio:prod": "drizzle-kit studio --config=drizzle.config.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.15.9",
