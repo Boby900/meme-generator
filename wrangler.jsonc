@@ -26,7 +26,7 @@
     {
         "binding": "DB",
         "database_name": "meme-db",
-        "database_id": "08e1a572-4ba9-40af-bfe0-1876316af4ef",
+        "database_id": "04a7d2a0-185d-47fb-a346-9d3b893bcb5c",
         "migrations_dir": "drizzle/migrations"
     }
   ],
