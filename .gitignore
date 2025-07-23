@@ -41,3 +41,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# MCP servers (development only)
+.mcp/servers/*/node_modules/
+.mcp/servers/*/.env*
+.mcp/servers/*/package-lock.json
+.mcp/servers/*/pnpm-lock.yaml
+.mcp/servers/*/yarn.lock
+# Keep MCP configuration and source files in git
+!.mcp/
+!.mcp/**/*.js
+!.mcp/**/*.json
+!.env.mcp.example
