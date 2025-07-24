@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { User, Menu, X, Zap, History, Settings, LogIn } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { SignOut } from '@/components/signout-button';
-import { SignIn } from '@/components/signin-button';
+import SignIn from '@/components/signin-button';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);

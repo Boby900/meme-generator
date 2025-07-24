@@ -1,5 +1,7 @@
 'use server';
 
+import { signIn } from "../../auth";
+
 export async function generateMeme(base64Image: string) {
     const OPENROUTER_API_KEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
 const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site URL
@@ -45,3 +47,6 @@ const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site 
 
     return response.json();
 }
+export async function signInWithGitHub() {
+    await signIn("github")
+  }
