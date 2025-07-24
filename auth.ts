@@ -10,11 +10,9 @@ import GitHub from "next-auth/providers/github"
 console.log('GitHub ID:', process.env.AUTH_GITHUB_ID)
 console.log('GitHub Secret exists:', !!process.env.AUTH_GITHUB_SECRET)  
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  debug: true,
   providers: [
-    GitHub({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
-    }),
+    GitHub,
     Credentials({
       credentials: {
         email: {},
