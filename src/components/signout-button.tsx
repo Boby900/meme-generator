@@ -1,11 +1,5 @@
-import { signOut } from "../../auth"
+import { handleSignOut } from "@/lib/actions"
 
-async function handleSignOut() {
-  await signOut({
-    redirect: true,
-    redirectTo: "/"
-  })
-} 
 
 export function SignOut() {
   return (

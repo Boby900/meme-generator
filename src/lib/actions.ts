@@ -1,6 +1,8 @@
 'use server';
 
-import { signIn } from "../../auth";
+import { signOut } from "../../auth";
+import { redirect } from "next/navigation"
+
 
 export async function generateMeme(base64Image: string) {
     const OPENROUTER_API_KEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
@@ -47,6 +49,13 @@ const YOUR_SITE_URL = "http://localhost:3000"; // Replace with your actual site 
 
     return response.json();
 }
-export async function signInWithGitHub() {
-    await signIn("github")
-  }
+
+
+
+
+export async function handleSignOut() {
+  await signOut({
+    redirect: false,  // Don't use auth.ts redirect
+  });
+  redirect("/");  // Manual redirect to home
+}
