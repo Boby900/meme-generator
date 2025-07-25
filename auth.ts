@@ -6,6 +6,8 @@ import { createDb } from "@/db"
 import { users } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { compare } from "bcryptjs"
+import Google from "next-auth/providers/google"
+
 import GitHub from "next-auth/providers/github"
 console.log('GitHub ID:', process.env.AUTH_GITHUB_ID)
 console.log('GitHub Secret exists:', !!process.env.AUTH_GITHUB_SECRET)  
@@ -13,6 +15,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: true,
   providers: [
     GitHub,
+    Google,
     Credentials({
       credentials: {
         email: {},
