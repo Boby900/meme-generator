@@ -1,10 +1,14 @@
 // src/app/api/users/route.ts
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { db } from '@/db';
 import { users } from '@/db/schema';
 
 export async function GET() {
   try {
+    if (!db) {
+      throw new Error('Database not initialized');
+    }
+
     const result = await db.select().from(users);
     console.log("Result:", result);
     
