@@ -14,7 +14,12 @@
 .open-next
 # testing
 /coverage
+.wrangler/
+.wrangler/*
 
+# Optional: Also ignore other Wrangler-related files
+wrangler.toml.backup
+.dev.vars
 # next.js
 /.next/
 /out/
