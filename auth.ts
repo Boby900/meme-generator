@@ -5,8 +5,6 @@ console.log('GitHub ID:', process.env.AUTH_GITHUB_ID)
 console.log('GitHub Secret exists:', !!process.env.AUTH_GITHUB_SECRET)  
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: true,
-  trustHost: true,
-
   providers: [
   GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
