@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { User, Menu, X, Zap, History, Settings, LogIn } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { SignOut } from '@/components/signout-button';
+import { Avatar } from '@/components/ui/avatar';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { data: session } = useSession();
-
+  console.log('Session:', session?.user ? session.user.image : 'No user session');
   return (
     <nav className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,15 +50,23 @@ export default function Navbar() {
                 href="/profile" 
                 className="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded-full transition-colors duration-200"
               >
-                <User className="h-5 w-5 text-gray-300" />
+                <Avatar className="h-8 w-8">
+                  {
+                    session?.user?.image ? (
+                      <img src={session.user.image} alt="Profile" className="h-8 w-8 rounded-full" />
+                    ) : (
+                      <User className="h-8 w-8 text-gray-400" />
+                    )
+                  }
+                </Avatar>
                 <span className="text-gray-300 text-sm font-medium">Profile</span>
               </Link>
             </div>
 
             {/* Sign In Button */}
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer">
               {session?.user ? (
-                <SignOut />
+                  <SignOut />
               ) : (
                 <Link href="/api/auth/signin">Sign In</Link>
               )}
