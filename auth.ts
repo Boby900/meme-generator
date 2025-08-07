@@ -35,6 +35,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async redirect({ url, baseUrl }) {
       return "/create"
-    }
-  }
-})
+    },
+    async signIn({ user, account }) {
+      console.log('User signed in:', user)
+      console.log('Account:', account)
+       try {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/users/sync`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.BACKEND_SECRET}` // Add auth for backend
+          },
+          body: JSON.stringify({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            provider: account?.provider,
+            providerAccountId: account?.providerAccountId,
+          })
+        })
+
+        if (!response.ok) {
+          console.error('Failed to sync user with backend')
+          return false
+        }
+
+        return true
+      } catch (error) {
+        console.error('Error syncing user:', error)
+        return false
+      }
+  },
+}})
