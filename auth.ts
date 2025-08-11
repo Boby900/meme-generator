@@ -40,7 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       console.log('User signed in:', user)
       console.log('Account:', account)
        try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/users/sync`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/users/user-create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,8 +51,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             email: user.email,
             name: user.name,
             image: user.image,
-            provider: account?.provider,
-            providerAccountId: account?.providerAccountId,
+
           })
         })
 
